@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Assessment Results</title>
+
+  <!-- Vendor CSS Files -->
+  <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/assets/css/main.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+    .progress {
+      height: 12px;
+    }
+    .badge {
+      font-size: 1rem;
+      padding: 8px 12px;
+    }
+    .recommendation-box {
+      background-color: #e3f2fd; /* Light blue */
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+
+
+<div class="container mt-5">
+  <h2 class="text-center text-primary">🧠 Parkinson’s Assessment Results</h2>
+
+  {% if results["PD Diagnosis"] == "Parkinson’s Detected" %}
+    <div class="card mt-4 p-4">
+      <h4 class="mb-3">🩺 Diagnosis: <span class="badge bg-danger">{{ results["PD Diagnosis"] }}</span></h4>
+
+      <h4 class="mb-3">
+        📊 Severity Stage: 
+        <span class="badge 
+          {% if results['Severity Stage'] == 'Mild' %} bg-success 
+          {% elif results['Severity Stage'] == 'Early-Stage' %} bg-info 
+          {% elif results['Severity Stage'] == 'Mid-Stage' %} bg-warning 
+          {% elif results['Severity Stage'] == 'Advanced' %} bg-orange 
+          {% else %} bg-danger {% endif %}">
+          {{ results["Severity Stage"] }}
+        </span>
+      </h4>
+
+      <div class="progress mb-3" style="height: 25px;">
+        <div class="progress-bar 
+          {% if results['Severity Stage'] == 'Mild' %} bg-success 
+          {% elif results['Severity Stage'] == 'Early-Stage' %} bg-info 
+          {% elif results['Severity Stage'] == 'Mid-Stage' %} bg-warning 
+          {% elif results['Severity Stage'] == 'Advanced' %} bg-orange 
+          {% else %} bg-danger {% endif %}" 
+          role="progressbar" 
+          style="width: 
+          {% if results['Severity Stage'] == 'Mild' %} 10% 
+          {% elif results['Severity Stage'] == 'Early-Stage' %} 30% 
+          {% elif results['Severity Stage'] == 'Mid-Stage' %} 50% 
+          {% elif results['Severity Stage'] == 'Advanced' %} 75% 
+          {% else %} 95% {% endif %};">
+        </div>
+      </div>
+
+      <h4 class="mb-3">🚦 Future Progression Risk: <span class="badge bg-info">{{ results["Future Progression Risk"] }}</span></h4>
+      <h4 class="mb-3">⚠️ Fall-Out Risk: <span class="badge bg-warning">{{ results["Fall-Out Risk"] }}</span></h4>
+      <h4 class="mb-4">🔍 Subtype: <strong>{{ results["Subtype"] }}</strong></h4>
+
+      <h5 class="mt-4">💡 Therapy Recommendation:</h5>
+      <div class="recommendation-box">
+        <ul class="list-group">
+          {% for line in results["Therapy Recommendation"] %}
+            <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> {{ line }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <h5 class="mt-4 mb-2">🥗 Diet Recommendation:</h5>
+      <div class="recommendation-box mb-4">
+        <ul class="list-group">
+          {% for line in results["Diet Recommendation"] %}
+            <li class="list-group-item"><i class="bi bi-check-circle text-primary"></i> {{ line }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+  {% else %}
+    <div class="card mt-4 p-4">
+      <h4 class="mb-3">🩺 Diagnosis: <span class="badge bg-success">{{ results["PD Diagnosis"] }}</span></h4>
+      
+      <h4 class="mb-3">📊 Severity Stage: <span class="badge bg-secondary">{{ results["Severity Stage"] }}</span></h4>
+      <h4 class="mb-3">🚦 Future Progression Risk: <span class="badge bg-secondary">{{ results["Future Progression Risk"] }}</span></h4>
+      <h4 class="mb-3">⚠️ Fall-Out Risk: <span class="badge bg-secondary">{{ results["Fall-Out Risk"] }}</span></h4>
+      <h4 class="mb-4">🔍 Subtype: 
+  <span class="badge bg-info text-dark">{{ results["Subtype"] }}</span>
+</h4>
+
+
+      <h5 class="mt-4">💡 Therapy Recommendation:</h5>
+      <div class="recommendation-box">
+        <ul class="list-group">
+          {% for line in results["Therapy Recommendation"] %}
+            <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> {{ line }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <h5 class="mt-4 mb-2">🥗 Diet Recommendation:</h5>
+      <div class="recommendation-box mb-4">
+        <ul class="list-group">
+          {% for line in results["Diet Recommendation"] %}
+            <li class="list-group-item"><i class="bi bi-check-circle text-primary"></i> {{ line }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="alert alert-info mt-4" role="alert">
+        <strong>Note:</strong> No Parkinson’s Disease detected. Keep maintaining a healthy lifestyle!
+      </div>
+    </div>
+  {% endif %}
+
+  <h4 class="mt-4 mb-3">🌟 Quality of Life: 
+    <span class="badge bg-secondary">{{ results["Quality of Life"] }}</span>
+  </h4>
+
+  <h5 class="mt-4">🧠 Neurologist Consultation: 
+    <span class="badge bg-info">{{ results["Consult Neurologist"] }}</span>
+  </h5>
+
+  <!-- Consult a Neurologist? Heading -->
+  <h5 class="mt-3">🧑‍🧠 Consult a Neurologist?</h5>
+
+  <!-- Dropdown -->
+  <select id="consultNeurologist" class="form-select mt-1"
+          style="width: 120px; height: 40px; font-size: 15px; display: inline-block; margin-left: 5px;">
+      <option value="No">No</option>
+      <option value="Yes">Yes</option>
+  </select>
+
+  <!-- Book Appointment Button (Initially Hidden, Styled) -->
+  <button id="bookAppointmentBtn" class="btn btn-primary mt-2"
+          style="border-radius: 6px; font-size: 15px; font-weight: 500; width: 220px; height: 42px; white-space: nowrap; display: none;">
+      📅 Book an Appointment
+  </button>
+
+  <!-- JavaScript to Show/Hide Button -->
+  <script>
+      document.getElementById("consultNeurologist").addEventListener("change", function () {
+          var button = document.getElementById("bookAppointmentBtn");
+          if (this.value === "Yes") {
+              button.style.display = "inline-block";
+          } else {
+              button.style.display = "none";
+          }
+      });
+  </script>
+
+  
+
+
+
+
+   <!-- Doctors Section -->
+   <section id="doctors" class="doctors section" style="display: none;">
+
+     <!-- Section Title -->
+     <div class="container section-title" data-aos="fade-up">
+       <h2>Top Neurologists</h2>
+     </div><!-- End Section Title -->
+
+     <div class="container">
+
+       <div class="row gy-4">
+
+         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+           <div class="team-member d-flex align-items-start">
+             <div class="pic"><img src="static/assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
+             <div class="member-info">
+               <h4><a href="https://www.kokilabenhospital.com/professionals/mohitbhatt.html" target="_blank">Dr. Mohit Bhatt</a></h4>
+               
+               <p>Director of Neurosciences at Kokilaben Dhirubhai Ambani Hospital, specializing in movement disorders and Deep Brain Stimulation therapy.</p>
+               <div class="social">
+               </div>
+             </div>
+           </div>
+         </div><!-- End Team Member -->
+
+         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
+           <div class="team-member d-flex align-items-start">
+             <div class="pic"><img src="static/assets/img/doctors/mani.PNG" class="img-fluid" alt=""></div>
+             <div class="member-info">
+               <h4><a href="https://www.kokilabenhospital.com/professionals/jayantimani.html" target="_blank">Dr. Jayanti Mani</a></h4>
+              
+               <p>Consultant Neurologist at Kokilaben Dhirubhai Ambani Hospital, with expertise in epilepsy management</p>
+               <div class="social">
+               </div>
+             </div>
+           </div>
+         </div><!-- End Team Member -->
+
+         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
+           <div class="team-member d-flex align-items-start">
+             <div class="pic"><img src="static/assets/img/doctors/doctors-3.jpg" class="img-fluid" alt=""></div>
+             <div class="member-info">
+               <h4><a href="https://lilavatihospital.com/Doctorprofile/10527/0" target="_blank">Dr. Siddhart Kharkar</a></h4>
+               
+               <p>Consultant Neurologist at Lilavati Hospital, specializing in epilepsy and Parkinson's disease</p>
+               <div class="social">
+               </div>
+             </div>
+           </div>
+         </div><!-- End Team Member -->
+
+         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
+           <div class="team-member d-flex align-items-start">
+             <div class="pic"><img src="static/assets/img/doctors/anil.PNG" class="img-fluid" alt=""></div>
+             <div class="member-info">
+               <h4><a href="https://www.fortishealthcare.com/doctors/dr-anil-venkitachalam-4942" target="_blank">Dr. Anil Venkitachalam</a></h4>
+            
+               <p>Consultant Neurologist at Fortis Hospital Mulund, with 15 years of experience in neurology</p>
+               <div class="social">
+               </div>
+             </div>
+           </div>
+         </div><!-- End Team Member -->
+
+       </div>
+
+     </div>
+
+   </section><!-- /Doctors Section -->
+
+<!-- JavaScript to Show Doctors Section -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var bookBtn = document.getElementById("bookAppointmentBtn");
+    if (bookBtn) {
+        bookBtn.addEventListener("click", function() {
+            document.getElementById("doctors").style.display = "block";
+            bookBtn.style.display = "none"; // Hide the button after clicking
+        });
+    }
+});
+</script>
+
+<div class="text-center mt-3">
+  <a href="{{ url_for('download_report') }}" 
+     class="btn btn-success btn-sm" 
+     style="font-weight: 600; font-size: 18px; border-radius: 8px; padding: 12px 30px; min-width: 180px;">
+      ⬇️ Download Report
+  </a>
+</div>
+
+      
+      
+
+
+
+
+
+
+      
+    </div>
+  </div>
+
+</body>
+</html>
